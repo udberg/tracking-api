@@ -139,7 +139,7 @@ Deletes the given measurement
 - rails db:migrate
 - rails db:seed to populate the database
 
-## The authentication uses a environment variable to wotk. To set it up:
+## The authentication uses a environment variable to work. To set it up:
 
 - bundle exec figaro install In the config/application.yml file that will be created add:
 - SECRET: <your_secret>
