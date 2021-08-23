@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class MeasurementsController < ApplicationController
   def index
     @measurements = current_user.measurements.with_units.order(created_at: :desc)
