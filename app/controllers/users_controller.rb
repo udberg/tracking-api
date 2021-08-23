@@ -1,9 +1,8 @@
 class UsersController < ApplicationController
   skip_before_action :authorized
-
   def create
     @user = User.new(user_params)
-    
+
     if @user.save
       token = encode_token({ user_id: @user.id })
       render json: { user: @user, token: token }
