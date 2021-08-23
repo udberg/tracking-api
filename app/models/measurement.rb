@@ -4,7 +4,7 @@ class Measurement < ApplicationRecord
 
   scope :with_units, -> { includes(:unit) }
 
-  scope :for_user ->(user) { where(user_id: user.id) }
+  scope :for_user, ->(user) { where(user_id: user.id) }
 
   validates :value, presence: true
 end

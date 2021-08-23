@@ -1,12 +1,18 @@
 class MeasurementsController < ApplicationController
   def index
     @measurements = current_user.measurements.with_units.order(created_at: :desc)
-    render json: { data: @measurements }
+    data = Hash.new { |h, k| h[k] = [] }
+    @measurements.each do |m|
+      data[m.unit.title] << m
+    end
+    render json: { data: data }
   end
 
   def create
-    @measurement = current_user.measurements.build(measurement_params)
-    @measurement.unit_id = params[:unit_id]
+    unit = Unit.find(params[:unit_id])
+    @measurement = unit.measurements.build(measurement_params)
+    @measurement.user = current_user
+
     if @measurement.save
       render json: { measurement: @measurement }
     else
@@ -28,6 +34,6 @@ class MeasurementsController < ApplicationController
   private
 
   def measurement_params
-    params.permit(:value, :unit_id)
+    params.permit(:value, :unit_id, :measurement)
   end
 end

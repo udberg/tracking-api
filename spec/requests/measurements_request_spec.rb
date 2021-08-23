@@ -36,7 +36,7 @@ RSpec.describe 'Measurements', type: :request do
       unit = Unit.last
       post "/units/#{unit.id}/measurements", params: { value: '' }, headers: { Authorization: "Bearer #{token}" }
       body = JSON.parse(response.body)
-      expect(body['error']).to eql('Invalid submission')
+      expect(body['error']).not_to be_blank
     end
   end
 
