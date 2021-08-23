@@ -12,23 +12,23 @@ RSpec.describe 'Users', type: :request do
     it 'returns error message if the name or password is invalid' do
       post '/users', params: { name: 'bob', password: '' }
       body = JSON.parse(response.body)
-      expect(body['error']).to eql('Invalid username or password')
+      expect(body['error']).not_to be_blank
     end
     it 'return error message if the username is taken' do
       post '/users', params: { name: 'example', password: '12345' }
       body = JSON.parse(response.body)
-      expect(body['error']).to eql('Invalid username or password')
+      expect(body['error']).not_to be_blank
     end
   end
 
-  describe 'POST /login' do
+  describe 'POST /sessions' do
     it 'logins the user' do
-      post '/login', params: { name: 'example', password: '12345' }
+      post '/sessions', params: { name: 'example', password: '12345' }
       body = JSON.parse(response.body)
       expect(body['user']['name']).to eql('example')
     end
     it 'return error message if wrong username or password is given' do
-      post '/login', params: { name: 'wrongName', password: '12345' }
+      post '/sessions', params: { name: 'wrongName', password: '12345' }
       body = JSON.parse(response.body)
       expect(body['error']).to eql('Invalid username or password')
     end
