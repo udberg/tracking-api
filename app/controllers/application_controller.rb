@@ -1,9 +1,10 @@
 class ApplicationController < ActionController::API
   before_action :authorized
 
+  SECRET_TOKEN = Rails.application.secrets.secret_key_base
+
   def encode_token(payload)
-    secret = ENV['SECRET']
-    JWT.encode(payload, secret)
+    JWT.encode(payload, SECRET_TOKEN)
   end
 
   def auth_header
@@ -17,8 +18,7 @@ class ApplicationController < ActionController::API
     token = auth_header.split[1]
     # header: { 'Authorization': 'Bearer <token>' }
     begin
-      secret = ENV['SECRET']
-      JWT.decode(token, secret, true, algorithm: 'HS256')
+      JWT.decode(token, SECRET_TOKEN, true, algorithm: 'HS256')
     rescue JWT::DecodeError
       nil
     end
@@ -32,7 +32,7 @@ class ApplicationController < ActionController::API
   end
 
   def logged_in?
-    !!logged_in_user
+    logged_in_user.present?
   end
 
   def authorized

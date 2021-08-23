@@ -1,0 +1,906 @@
+  [1m[35m (145.2ms)[0m  [1m[35mCREATE DATABASE "tracking_api_development" ENCODING = 'unicode'[0m
+  [1m[35m (133.4ms)[0m  [1m[35mCREATE DATABASE "tracking_api_test" ENCODING = 'unicode'[0m
+  [1m[35m (9.5ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+  [1m[35m (7.7ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT pg_try_advisory_lock(8450655555078892575)[0m
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateUsers (20210607122120)
+  [1m[36mTRANSACTION (3.5ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (7.5ms)[0m  [1m[35mCREATE TABLE "users" ("id" bigserial primary key, "name" character varying, "password_digest" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[35m (2.8ms)[0m  [1m[35mCREATE UNIQUE INDEX "index_users_on_name" ON "users" ("name")[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20210607122120"]]
+  [1m[36mTRANSACTION (1.5ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateUnits (20210607122133)
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (10.6ms)[0m  [1m[35mCREATE TABLE "units" ("id" bigserial primary key, "title" character varying, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (3.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20210607122133"]]
+  [1m[36mTRANSACTION (1.2ms)[0m  [1m[35mCOMMIT[0m
+Migrating to CreateMeasurements (20210607122210)
+  [1m[36mTRANSACTION (1.6ms)[0m  [1m[35mBEGIN[0m
+  [1m[35m (4.1ms)[0m  [1m[35mCREATE TABLE "measurements" ("id" bigserial primary key, "unit_id" integer, "user_id" integer, "value" float, "created_at" timestamp(6) NOT NULL, "updated_at" timestamp(6) NOT NULL)[0m
+  [1m[36mActiveRecord::SchemaMigration Create (0.6ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20210607122210"]]
+  [1m[36mTRANSACTION (1.0ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.6ms)[0m  [1m[34mSELECT "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mActiveRecord::InternalMetadata Create (0.7ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "development"], ["created_at", "2021-08-23 08:45:29.672180"], ["updated_at", "2021-08-23 08:45:29.672180"]]
+  [1m[36mTRANSACTION (10.9ms)[0m  [1m[35mCOMMIT[0m
+  [1m[35m (1.6ms)[0m  [1m[34mSELECT pg_advisory_unlock(8450655555078892575)[0m
+  [1m[35m (3.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Started POST "/users" for ::1 at 2021-08-23 14:21:15 +0530
+  [1m[35m (0.8ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by UsersController#create as */*
+  Parameters: {"name"=>"abeidahmed", "password"=>"[FILTERED]", "user"=>{"name"=>"abeidahmed"}}
+Filter chain halted as :authorized rendered or redirected
+Completed 401 Unauthorized in 1ms (Views: 0.8ms | ActiveRecord: 1.2ms | Allocations: 360)
+
+
+Started POST "/users" for ::1 at 2021-08-23 14:21:50 +0530
+Processing by UsersController#create as */*
+  Parameters: {"name"=>"abeidahmed", "password"=>"[FILTERED]", "user"=>{"name"=>"abeidahmed"}}
+[31mUnpermitted parameter: :user[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users_controller.rb:7:in `create'
+  [1m[36mUser Exists? (1.1ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."name") = LOWER($1) LIMIT $2[0m  [["name", "abeidahmed"], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:7:in `create'
+  [1m[36mUser Create (0.6ms)[0m  [1m[32mINSERT INTO "users" ("name", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "abeidahmed"], ["password_digest", "$2a$12$U3tLne4zY4V13XN15nTP.uJpHPe4Y9URM29DYx1duDm1sH4MM/w2m"], ["created_at", "2021-08-23 08:51:50.667337"], ["updated_at", "2021-08-23 08:51:50.667337"]]
+  ↳ app/controllers/users_controller.rb:7:in `create'
+  [1m[36mTRANSACTION (1.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users_controller.rb:7:in `create'
+Completed 200 OK in 298ms (Views: 0.3ms | ActiveRecord: 8.0ms | Allocations: 10037)
+
+
+Started POST "/sessions" for ::1 at 2021-08-23 14:23:24 +0530
+  [1m[35m (0.5ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by SessionsController#create as */*
+  Parameters: {"name"=>"abeidahmed", "password"=>"[FILTERED]", "session"=>{"name"=>"abeidahmed", "password"=>"[FILTERED]"}}
+Filter chain halted as :authorized rendered or redirected
+Completed 401 Unauthorized in 1ms (Views: 0.3ms | ActiveRecord: 0.0ms | Allocations: 357)
+
+
+Started POST "/sessions" for ::1 at 2021-08-23 14:23:44 +0530
+Processing by SessionsController#create as */*
+  Parameters: {"name"=>"abeidahmed", "password"=>"[FILTERED]", "session"=>{"name"=>"abeidahmed", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."name" = $1 LIMIT $2[0m  [["name", "abeidahmed"], ["LIMIT", 1]]
+  ↳ app/controllers/sessions_controller.rb:5:in `create'
+Completed 200 OK in 291ms (Views: 0.8ms | ActiveRecord: 5.8ms | Allocations: 9114)
+
+
+Started GET "/measurements" for ::1 at 2021-08-23 14:24:24 +0530
+  
+SyntaxError (/home/abeid/project/tracking-api/app/models/measurement.rb:7: syntax error, unexpected ->, expecting `end'
+  scope :for_user ->(user) { where(user_id: user....
+                  ^~
+):
+  
+app/models/measurement.rb:7: syntax error, unexpected ->, expecting `end'
+app/models/measurement.rb:7: syntax error, unexpected ->, expecting `end'
+Started GET "/measurements" for ::1 at 2021-08-23 14:24:41 +0530
+Processing by MeasurementsController#index as */*
+  Parameters: {"name"=>"abeidahmed", "password"=>"[FILTERED]", "measurement"=>{}}
+Filter chain halted as :authorized rendered or redirected
+Completed 401 Unauthorized in 1ms (Views: 0.2ms | ActiveRecord: 1.6ms | Allocations: 226)
+
+
+Started POST "/sessions" for ::1 at 2021-08-23 14:25:34 +0530
+Processing by SessionsController#create as */*
+  Parameters: {"name"=>"abeidahmed", "password"=>"[FILTERED]", "session"=>{"name"=>"abeidahmed", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."name" = $1 LIMIT $2[0m  [["name", "abeidahmed"], ["LIMIT", 1]]
+  ↳ app/controllers/sessions_controller.rb:5:in `create'
+Completed 200 OK in 278ms (Views: 0.5ms | ActiveRecord: 3.9ms | Allocations: 4931)
+
+
+Started GET "/measurements" for ::1 at 2021-08-23 14:26:04 +0530
+Processing by MeasurementsController#index as */*
+Filter chain halted as :authorized rendered or redirected
+Completed 401 Unauthorized in 1ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 317)
+
+
+Started GET "/measurements" for ::1 at 2021-08-23 14:26:44 +0530
+Processing by MeasurementsController#index as */*
+Filter chain halted as :authorized rendered or redirected
+Completed 401 Unauthorized in 1ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 146)
+
+
+Started GET "/measurements" for ::1 at 2021-08-23 14:26:51 +0530
+Processing by MeasurementsController#index as */*
+Filter chain halted as :authorized rendered or redirected
+Completed 401 Unauthorized in 1ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 144)
+
+
+Started GET "/measurements" for ::1 at 2021-08-23 14:27:03 +0530
+Processing by MeasurementsController#index as */*
+Completed 500 Internal Server Error in 3ms (ActiveRecord: 0.0ms | Allocations: 641)
+
+
+  
+NoMethodError (undefined method `measurements' for nil:NilClass):
+  
+app/controllers/measurements_controller.rb:5:in `index'
+Started GET "/measurements" for ::1 at 2021-08-23 14:27:49 +0530
+Processing by MeasurementsController#index as */*
+Filter chain halted as :authorized rendered or redirected
+Completed 401 Unauthorized in 1ms (Views: 0.3ms | ActiveRecord: 0.0ms | Allocations: 317)
+
+
+Started GET "/measurements" for ::1 at 2021-08-23 14:28:31 +0530
+Processing by MeasurementsController#index as */*
+Filter chain halted as :authorized rendered or redirected
+Completed 401 Unauthorized in 1ms (Views: 0.3ms | ActiveRecord: 0.0ms | Allocations: 251)
+
+
+Started POST "/sessions" for ::1 at 2021-08-23 14:28:38 +0530
+Processing by SessionsController#create as */*
+  Parameters: {"name"=>"abeidahmed", "password"=>"[FILTERED]", "session"=>{"name"=>"abeidahmed", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."name" = $1 LIMIT $2[0m  [["name", "abeidahmed"], ["LIMIT", 1]]
+  ↳ app/controllers/sessions_controller.rb:5:in `create'
+Completed 200 OK in 285ms (Views: 0.7ms | ActiveRecord: 4.0ms | Allocations: 5151)
+
+
+Started GET "/measurements" for ::1 at 2021-08-23 14:28:46 +0530
+Processing by MeasurementsController#index as */*
+Filter chain halted as :authorized rendered or redirected
+Completed 401 Unauthorized in 0ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 125)
+
+
+Started GET "/measurements" for ::1 at 2021-08-23 14:29:00 +0530
+Processing by MeasurementsController#index as */*
+Filter chain halted as :authorized rendered or redirected
+Completed 401 Unauthorized in 32687ms (Views: 1.5ms | ActiveRecord: 0.0ms | Allocations: 186341)
+
+
+Started GET "/measurements" for ::1 at 2021-08-23 14:29:38 +0530
+Processing by MeasurementsController#index as */*
+Filter chain halted as :authorized rendered or redirected
+Completed 401 Unauthorized in 1ms (Views: 0.6ms | ActiveRecord: 0.0ms | Allocations: 333)
+
+
+Started GET "/measurements" for ::1 at 2021-08-23 14:29:40 +0530
+Processing by MeasurementsController#index as */*
+Filter chain halted as :authorized rendered or redirected
+Completed 401 Unauthorized in 1ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 142)
+
+
+Started GET "/measurements" for ::1 at 2021-08-23 14:29:41 +0530
+Processing by MeasurementsController#index as */*
+Filter chain halted as :authorized rendered or redirected
+Completed 401 Unauthorized in 1ms (Views: 0.2ms | ActiveRecord: 0.0ms | Allocations: 142)
+
+
+Started GET "/measurements" for ::1 at 2021-08-23 14:29:55 +0530
+Processing by MeasurementsController#index as */*
+Filter chain halted as :authorized rendered or redirected
+Completed 401 Unauthorized in 37561ms (Views: 0.4ms | ActiveRecord: 0.0ms | Allocations: 8404)
+
+
+Started POST "/sessions" for ::1 at 2021-08-23 14:31:16 +0530
+Processing by SessionsController#create as */*
+  Parameters: {"name"=>"abeidahmed", "password"=>"[FILTERED]", "session"=>{"name"=>"abeidahmed", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."name" = $1 LIMIT $2[0m  [["name", "abeidahmed"], ["LIMIT", 1]]
+  ↳ app/controllers/sessions_controller.rb:5:in `create'
+Completed 200 OK in 274ms (Views: 0.8ms | ActiveRecord: 6.4ms | Allocations: 4947)
+
+
+Started GET "/measurements" for ::1 at 2021-08-23 14:31:26 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.7ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:4:in `index'
+Completed 200 OK in 31ms (Views: 3.4ms | ActiveRecord: 1.9ms | Allocations: 8858)
+
+
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUnit Create (1.1ms)[0m  [1m[32mINSERT INTO "units" ("title", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["title", "kg"], ["created_at", "2021-08-23 09:03:17.787638"], ["updated_at", "2021-08-23 09:03:17.787638"]]
+  [1m[36mTRANSACTION (1.4ms)[0m  [1m[35mCOMMIT[0m
+Started POST "/units/1/measurements" for ::1 at 2021-08-23 14:35:30 +0530
+Processing by MeasurementsController#create as */*
+  Parameters: {"value"=>"Abeid Ahmed", "unit_id"=>"1", "measurement"=>{"value"=>"Abeid Ahmed"}}
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.5ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/measurements_controller.rb:8:in `create'
+[31mUnpermitted parameters: :unit_id, :measurement[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/measurements_controller.rb:12:in `create'
+  [1m[36mMeasurement Create (0.6ms)[0m  [1m[32mINSERT INTO "measurements" ("unit_id", "user_id", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["unit_id", 1], ["user_id", 1], ["value", 0.0], ["created_at", "2021-08-23 09:05:30.515328"], ["updated_at", "2021-08-23 09:05:30.515328"]]
+  ↳ app/controllers/measurements_controller.rb:12:in `create'
+  [1m[36mTRANSACTION (1.5ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/measurements_controller.rb:12:in `create'
+Completed 200 OK in 48ms (Views: 0.5ms | ActiveRecord: 13.5ms | Allocations: 16986)
+
+
+Started GET "/measurements" for ::1 at 2021-08-23 14:36:36 +0530
+Processing by MeasurementsController#index as */*
+  Parameters: {"value"=>"Abeid Ahmed", "measurement"=>{"value"=>"Abeid Ahmed"}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.3ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:4:in `index'
+  [1m[36mUnit Load (0.5ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1[0m  [["id", 1]]
+  ↳ app/controllers/measurements_controller.rb:4:in `index'
+Completed 200 OK in 39ms (Views: 20.6ms | ActiveRecord: 12.5ms | Allocations: 13027)
+
+
+  [1m[36mUnit Load (0.9ms)[0m  [1m[34mSELECT "units".* FROM "units" ORDER BY "units"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+  [1m[36mMeasurement Load (0.8ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" ORDER BY "measurements"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Started POST "/units/1/measurements" for ::1 at 2021-08-23 14:38:13 +0530
+Processing by MeasurementsController#create as */*
+  Parameters: {"value"=>1.1, "unit_id"=>"1", "measurement"=>{"value"=>1.1}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.3ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/measurements_controller.rb:8:in `create'
+[31mUnpermitted parameters: :unit_id, :measurement[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/measurements_controller.rb:12:in `create'
+  [1m[36mMeasurement Create (0.3ms)[0m  [1m[32mINSERT INTO "measurements" ("unit_id", "user_id", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["unit_id", 1], ["user_id", 1], ["value", 1.1], ["created_at", "2021-08-23 09:08:13.922142"], ["updated_at", "2021-08-23 09:08:13.922142"]]
+  ↳ app/controllers/measurements_controller.rb:12:in `create'
+  [1m[36mTRANSACTION (1.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/measurements_controller.rb:12:in `create'
+Completed 200 OK in 38ms (Views: 0.6ms | ActiveRecord: 12.1ms | Allocations: 13000)
+
+
+  [1m[36mUser Load (1.0ms)[0m  [1m[34mSELECT "users".* FROM "users" ORDER BY "users"."id" ASC LIMIT $1[0m  [["LIMIT", 1]]
+Started POST "/login" for 127.0.0.1 at 2021-08-23 14:49:07 +0530
+  
+ActionController::RoutingError (No route matches [POST] "/login"):
+  
+Started POST "/sessions" for 127.0.0.1 at 2021-08-23 14:50:31 +0530
+Processing by SessionsController#create as JSON
+  Parameters: {"name"=>"abeidahmed", "password"=>"[FILTERED]", "session"=>{"name"=>"abeidahmed", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."name" = $1 LIMIT $2[0m  [["name", "abeidahmed"], ["LIMIT", 1]]
+  ↳ app/controllers/sessions_controller.rb:5:in `create'
+Completed 200 OK in 292ms (Views: 0.8ms | ActiveRecord: 6.2ms | Allocations: 7210)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 14:50:32 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.6ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:4:in `index'
+  [1m[36mUnit Load (0.7ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1[0m  [["id", 1]]
+  ↳ app/controllers/measurements_controller.rb:4:in `index'
+Completed 200 OK in 38ms (Views: 29.0ms | ActiveRecord: 1.5ms | Allocations: 10288)
+
+
+Started POST "/users" for 127.0.0.1 at 2021-08-23 14:50:57 +0530
+Processing by UsersController#create as JSON
+  Parameters: {"name"=>"alskdfjlasjdfl", "password"=>"[FILTERED]", "user"=>{"name"=>"alskdfjlasjdfl"}}
+[31mUnpermitted parameter: :user[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/users_controller.rb:7:in `create'
+  [1m[36mUser Exists? (0.9ms)[0m  [1m[34mSELECT 1 AS one FROM "users" WHERE LOWER("users"."name") = LOWER($1) LIMIT $2[0m  [["name", "alskdfjlasjdfl"], ["LIMIT", 1]]
+  ↳ app/controllers/users_controller.rb:7:in `create'
+  [1m[36mUser Create (0.5ms)[0m  [1m[32mINSERT INTO "users" ("name", "password_digest", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "id"[0m  [["name", "alskdfjlasjdfl"], ["password_digest", "$2a$12$yO1TBiY80CgV8uw.ZFA1MuOkg4tBPdoo1u2vqF./i1ggUUzb74nfG"], ["created_at", "2021-08-23 09:20:57.962864"], ["updated_at", "2021-08-23 09:20:57.962864"]]
+  ↳ app/controllers/users_controller.rb:7:in `create'
+  [1m[36mTRANSACTION (3.5ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/users_controller.rb:7:in `create'
+Completed 200 OK in 287ms (Views: 0.8ms | ActiveRecord: 12.7ms | Allocations: 5988)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 14:50:58 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.4ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/measurements_controller.rb:4:in `index'
+Completed 200 OK in 16ms (Views: 3.1ms | ActiveRecord: 1.0ms | Allocations: 3520)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 14:51:02 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (1.0ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/measurements_controller.rb:4:in `index'
+Completed 200 OK in 11ms (Views: 5.5ms | ActiveRecord: 1.5ms | Allocations: 1617)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 14:51:08 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.4ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 10ms (Views: 5.3ms | ActiveRecord: 0.8ms | Allocations: 4398)
+
+
+Started POST "/units/1/measurements" for 127.0.0.1 at 2021-08-23 14:51:14 +0530
+Processing by MeasurementsController#create as JSON
+  Parameters: {"unit_id"=>"1", "measurement"=>{}}
+  [1m[36mUser Load (2.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.7ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/measurements_controller.rb:8:in `create'
+[31mUnpermitted parameters: :unit_id, :measurement[0m
+Completed 422 Unprocessable Entity in 41ms (Views: 14.7ms | ActiveRecord: 3.0ms | Allocations: 8013)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 14:51:19 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.3ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 2]]
+  ↳ app/controllers/measurements_controller.rb:4:in `index'
+Completed 200 OK in 6ms (Views: 2.2ms | ActiveRecord: 0.8ms | Allocations: 1775)
+
+
+Started POST "/sessions" for 127.0.0.1 at 2021-08-23 14:51:40 +0530
+Processing by SessionsController#create as JSON
+  Parameters: {"name"=>"abeidahmed", "password"=>"[FILTERED]", "session"=>{"name"=>"abeidahmed", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."name" = $1 LIMIT $2[0m  [["name", "abeidahmed"], ["LIMIT", 1]]
+  ↳ app/controllers/sessions_controller.rb:5:in `create'
+Completed 200 OK in 265ms (Views: 0.6ms | ActiveRecord: 0.3ms | Allocations: 1124)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 14:51:40 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.9ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:4:in `index'
+  [1m[36mUnit Load (1.6ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1[0m  [["id", 1]]
+  ↳ app/controllers/measurements_controller.rb:4:in `index'
+Completed 200 OK in 10ms (Views: 4.5ms | ActiveRecord: 2.8ms | Allocations: 2627)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 14:53:18 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.5ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (0.3ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1[0m  [["id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 84ms (Views: 0.7ms | ActiveRecord: 18.3ms | Allocations: 13617)
+
+
+Started POST "/sessions" for 127.0.0.1 at 2021-08-23 14:53:29 +0530
+Processing by SessionsController#create as JSON
+  Parameters: {"name"=>"abeidahmed", "password"=>"[FILTERED]", "session"=>{"name"=>"abeidahmed", "password"=>"[FILTERED]"}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."name" = $1 LIMIT $2[0m  [["name", "abeidahmed"], ["LIMIT", 1]]
+  ↳ app/controllers/sessions_controller.rb:5:in `create'
+Completed 200 OK in 258ms (Views: 0.6ms | ActiveRecord: 0.3ms | Allocations: 1130)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 14:53:29 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.3ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (0.3ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1[0m  [["id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 9ms (Views: 0.8ms | ActiveRecord: 0.8ms | Allocations: 2403)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 14:53:31 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.2ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (0.3ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1[0m  [["id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 7ms (Views: 0.6ms | ActiveRecord: 0.8ms | Allocations: 2330)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 14:53:36 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.3ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 6ms (Views: 2.0ms | ActiveRecord: 0.5ms | Allocations: 1667)
+
+
+Started POST "/units/1/measurements" for 127.0.0.1 at 2021-08-23 14:53:41 +0530
+Processing by MeasurementsController#create as JSON
+  Parameters: {"value"=>"12", "unit_id"=>"1", "measurement"=>{"value"=>"12"}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.4ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/measurements_controller.rb:12:in `create'
+[31mUnpermitted parameters: :unit_id, :measurement[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mMeasurement Create (0.8ms)[0m  [1m[32mINSERT INTO "measurements" ("unit_id", "user_id", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["unit_id", 1], ["user_id", 1], ["value", 12.0], ["created_at", "2021-08-23 09:23:41.612958"], ["updated_at", "2021-08-23 09:23:41.612958"]]
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (2.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+Completed 200 OK in 20ms (Views: 1.0ms | ActiveRecord: 3.6ms | Allocations: 3628)
+
+
+Started POST "/units/1/measurements" for 127.0.0.1 at 2021-08-23 14:53:51 +0530
+Processing by MeasurementsController#create as JSON
+  Parameters: {"value"=>"12", "unit_id"=>"1", "measurement"=>{"value"=>"12"}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.5ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/measurements_controller.rb:12:in `create'
+[31mUnpermitted parameters: :unit_id, :measurement[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mMeasurement Create (0.4ms)[0m  [1m[32mINSERT INTO "measurements" ("unit_id", "user_id", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["unit_id", 1], ["user_id", 1], ["value", 12.0], ["created_at", "2021-08-23 09:23:51.780029"], ["updated_at", "2021-08-23 09:23:51.780029"]]
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (2.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+Completed 200 OK in 15ms (Views: 0.3ms | ActiveRecord: 3.5ms | Allocations: 3115)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 14:55:35 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.3ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 5ms (Views: 1.6ms | ActiveRecord: 0.6ms | Allocations: 1355)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 14:55:35 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.6ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 7ms (Views: 2.4ms | ActiveRecord: 1.3ms | Allocations: 1356)
+
+
+Started POST "/units/1/measurements" for 127.0.0.1 at 2021-08-23 14:55:37 +0530
+Processing by MeasurementsController#create as JSON
+  Parameters: {"value"=>"123", "unit_id"=>"1", "measurement"=>{"value"=>"123"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.5ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/measurements_controller.rb:12:in `create'
+[31mUnpermitted parameters: :unit_id, :measurement[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mMeasurement Create (0.7ms)[0m  [1m[32mINSERT INTO "measurements" ("unit_id", "user_id", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["unit_id", 1], ["user_id", 1], ["value", 123.0], ["created_at", "2021-08-23 09:25:37.403026"], ["updated_at", "2021-08-23 09:25:37.403026"]]
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (2.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+Completed 200 OK in 21ms (Views: 0.5ms | ActiveRecord: 4.4ms | Allocations: 3109)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 14:56:07 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.4ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 43ms (Views: 7.2ms | ActiveRecord: 8.1ms | Allocations: 10249)
+
+
+Started POST "/units/1/measurements" for 127.0.0.1 at 2021-08-23 14:56:10 +0530
+Processing by MeasurementsController#create as JSON
+  Parameters: {"value"=>"123", "unit_id"=>"1", "measurement"=>{"value"=>"123"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.3ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/measurements_controller.rb:12:in `create'
+[31mUnpermitted parameters: :unit_id, :measurement[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mMeasurement Create (0.9ms)[0m  [1m[32mINSERT INTO "measurements" ("unit_id", "user_id", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["unit_id", 1], ["user_id", 1], ["value", 123.0], ["created_at", "2021-08-23 09:26:10.157085"], ["updated_at", "2021-08-23 09:26:10.157085"]]
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (1.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+Completed 200 OK in 52ms (Views: 0.7ms | ActiveRecord: 3.4ms | Allocations: 6374)
+
+
+Started POST "/units/1/measurements" for 127.0.0.1 at 2021-08-23 14:56:42 +0530
+Processing by MeasurementsController#create as JSON
+  Parameters: {"value"=>"23123", "unit_id"=>"1", "measurement"=>{"value"=>"23123"}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (1.6ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/measurements_controller.rb:12:in `create'
+[31mUnpermitted parameters: :unit_id, :measurement[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mMeasurement Create (0.3ms)[0m  [1m[32mINSERT INTO "measurements" ("unit_id", "user_id", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["unit_id", 1], ["user_id", 1], ["value", 23123.0], ["created_at", "2021-08-23 09:26:42.579575"], ["updated_at", "2021-08-23 09:26:42.579575"]]
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (3.3ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+Completed 200 OK in 18ms (Views: 0.7ms | ActiveRecord: 5.7ms | Allocations: 3109)
+
+
+Started POST "/units/1/measurements" for 127.0.0.1 at 2021-08-23 14:56:50 +0530
+Processing by MeasurementsController#create as JSON
+  Parameters: {"value"=>"", "unit_id"=>"1", "measurement"=>{"value"=>""}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.4ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/measurements_controller.rb:12:in `create'
+[31mUnpermitted parameters: :unit_id, :measurement[0m
+Completed 422 Unprocessable Entity in 9ms (Views: 1.5ms | ActiveRecord: 0.7ms | Allocations: 1902)
+
+
+Started POST "/units/1/measurements" for 127.0.0.1 at 2021-08-23 14:56:55 +0530
+Processing by MeasurementsController#create as JSON
+  Parameters: {"value"=>"123", "unit_id"=>"1", "measurement"=>{"value"=>"123"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.6ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/measurements_controller.rb:12:in `create'
+[31mUnpermitted parameters: :unit_id, :measurement[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mMeasurement Create (0.8ms)[0m  [1m[32mINSERT INTO "measurements" ("unit_id", "user_id", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["unit_id", 1], ["user_id", 1], ["value", 123.0], ["created_at", "2021-08-23 09:26:55.589306"], ["updated_at", "2021-08-23 09:26:55.589306"]]
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (1.7ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+Completed 200 OK in 21ms (Views: 0.9ms | ActiveRecord: 3.7ms | Allocations: 3117)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 14:57:28 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.5ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 6ms (Views: 2.3ms | ActiveRecord: 0.9ms | Allocations: 1355)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 14:57:43 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (2.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.3ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 71ms (Views: 11.4ms | ActiveRecord: 24.3ms | Allocations: 8587)
+
+
+Started POST "/units/1/measurements" for 127.0.0.1 at 2021-08-23 14:57:45 +0530
+Processing by MeasurementsController#create as JSON
+  Parameters: {"value"=>"123", "unit_id"=>"1", "measurement"=>{"value"=>"123"}}
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.2ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/measurements_controller.rb:12:in `create'
+[31mUnpermitted parameter: :measurement[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mMeasurement Create (0.4ms)[0m  [1m[32mINSERT INTO "measurements" ("unit_id", "user_id", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["unit_id", 1], ["user_id", 1], ["value", 123.0], ["created_at", "2021-08-23 09:27:45.983911"], ["updated_at", "2021-08-23 09:27:45.983911"]]
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (6.2ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+Completed 200 OK in 29ms (Views: 0.3ms | ActiveRecord: 9.8ms | Allocations: 6369)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 14:57:53 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.3ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 43ms (Views: 7.8ms | ActiveRecord: 11.4ms | Allocations: 8529)
+
+
+Started POST "/units/1/measurements" for 127.0.0.1 at 2021-08-23 14:57:56 +0530
+Processing by MeasurementsController#create as JSON
+  Parameters: {"value"=>"1212", "unit_id"=>"1", "measurement"=>{"value"=>"1212"}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (2.4ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/measurements_controller.rb:12:in `create'
+[31mUnpermitted parameter: :measurement[0m
+  [1m[36mTRANSACTION (0.1ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mMeasurement Create (0.3ms)[0m  [1m[32mINSERT INTO "measurements" ("unit_id", "user_id", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["unit_id", 1], ["user_id", 1], ["value", 1212.0], ["created_at", "2021-08-23 09:27:56.114637"], ["updated_at", "2021-08-23 09:27:56.114637"]]
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (1.6ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+Completed 200 OK in 25ms (Views: 0.4ms | ActiveRecord: 9.2ms | Allocations: 6376)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 14:58:12 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.3ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 7ms (Views: 2.2ms | ActiveRecord: 0.7ms | Allocations: 1361)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 14:58:20 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.5ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (1.4ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1[0m  [["id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 15ms (Views: 1.7ms | ActiveRecord: 2.4ms | Allocations: 3228)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 14:58:26 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.3ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 4ms (Views: 1.4ms | ActiveRecord: 0.5ms | Allocations: 1355)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 14:59:48 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.7ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (0.5ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1[0m  [["id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 23ms (Views: 2.9ms | ActiveRecord: 1.5ms | Allocations: 3083)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 14:59:52 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.4ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 8ms (Views: 3.6ms | ActiveRecord: 0.8ms | Allocations: 1355)
+
+
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUnit Create (0.6ms)[0m  [1m[32mINSERT INTO "units" ("title", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["title", "Weight"], ["created_at", "2021-08-23 09:30:28.368998"], ["updated_at", "2021-08-23 09:30:28.368998"]]
+  [1m[36mTRANSACTION (2.1ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUnit Create (0.5ms)[0m  [1m[32mINSERT INTO "units" ("title", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["title", "Energy"], ["created_at", "2021-08-23 09:30:33.807892"], ["updated_at", "2021-08-23 09:30:33.807892"]]
+  [1m[36mTRANSACTION (2.2ms)[0m  [1m[35mCOMMIT[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  [1m[36mUnit Create (0.4ms)[0m  [1m[32mINSERT INTO "units" ("title", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"[0m  [["title", "Energy burned"], ["created_at", "2021-08-23 09:30:40.887990"], ["updated_at", "2021-08-23 09:30:40.887990"]]
+  [1m[36mTRANSACTION (1.7ms)[0m  [1m[35mCOMMIT[0m
+Started GET "/units" for 127.0.0.1 at 2021-08-23 15:00:43 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.8ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 10ms (Views: 5.7ms | ActiveRecord: 1.1ms | Allocations: 1596)
+
+
+Started POST "/units/2/measurements" for 127.0.0.1 at 2021-08-23 15:00:48 +0530
+Processing by MeasurementsController#create as JSON
+  Parameters: {"value"=>"56", "unit_id"=>"2", "measurement"=>{"value"=>"56"}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.3ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1 LIMIT $2[0m  [["id", 2], ["LIMIT", 1]]
+  ↳ app/controllers/measurements_controller.rb:12:in `create'
+[31mUnpermitted parameter: :measurement[0m
+  [1m[36mTRANSACTION (0.2ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mMeasurement Create (0.5ms)[0m  [1m[32mINSERT INTO "measurements" ("unit_id", "user_id", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["unit_id", 2], ["user_id", 1], ["value", 56.0], ["created_at", "2021-08-23 09:30:48.499966"], ["updated_at", "2021-08-23 09:30:48.499966"]]
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (2.0ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+Completed 200 OK in 25ms (Views: 0.5ms | ActiveRecord: 3.3ms | Allocations: 3133)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 15:00:50 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.5ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (0.5ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" IN ($1, $2)[0m  [[nil, 2], [nil, 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 11ms (Views: 3.1ms | ActiveRecord: 1.2ms | Allocations: 3230)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 15:00:57 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (2.8ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 14ms (Views: 5.6ms | ActiveRecord: 3.1ms | Allocations: 1596)
+
+
+Started POST "/units/4/measurements" for 127.0.0.1 at 2021-08-23 15:01:00 +0530
+Processing by MeasurementsController#create as JSON
+  Parameters: {"value"=>"45", "unit_id"=>"4", "measurement"=>{"value"=>"45"}}
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.4ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" = $1 LIMIT $2[0m  [["id", 4], ["LIMIT", 1]]
+  ↳ app/controllers/measurements_controller.rb:12:in `create'
+[31mUnpermitted parameter: :measurement[0m
+  [1m[36mTRANSACTION (0.3ms)[0m  [1m[35mBEGIN[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mMeasurement Create (0.6ms)[0m  [1m[32mINSERT INTO "measurements" ("unit_id", "user_id", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4, $5) RETURNING "id"[0m  [["unit_id", 4], ["user_id", 1], ["value", 45.0], ["created_at", "2021-08-23 09:31:00.958295"], ["updated_at", "2021-08-23 09:31:00.958295"]]
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+  [1m[36mTRANSACTION (1.9ms)[0m  [1m[35mCOMMIT[0m
+  ↳ app/controllers/measurements_controller.rb:16:in `create'
+Completed 200 OK in 20ms (Views: 0.4ms | ActiveRecord: 3.5ms | Allocations: 3130)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 15:01:02 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.4ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 7ms (Views: 2.4ms | ActiveRecord: 1.0ms | Allocations: 1596)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 15:01:03 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.8ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.2ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (0.3ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" IN ($1, $2, $3)[0m  [[nil, 4], [nil, 2], [nil, 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 10ms (Views: 1.9ms | ActiveRecord: 1.3ms | Allocations: 3320)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 15:01:19 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.2ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 6ms (Views: 1.9ms | ActiveRecord: 0.8ms | Allocations: 1596)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 15:02:55 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (5.1ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.7ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 48ms (Views: 6.9ms | ActiveRecord: 13.5ms | Allocations: 10539)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 15:02:57 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.7ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (1.1ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" IN ($1, $2, $3)[0m  [[nil, 4], [nil, 2], [nil, 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 30ms (Views: 3.6ms | ActiveRecord: 2.4ms | Allocations: 7516)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 15:02:58 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.3ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 4ms (Views: 1.9ms | ActiveRecord: 0.5ms | Allocations: 1651)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 15:02:59 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (1.0ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (0.4ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" IN ($1, $2, $3)[0m  [[nil, 4], [nil, 2], [nil, 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 16ms (Views: 2.7ms | ActiveRecord: 2.1ms | Allocations: 3320)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 15:02:59 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.7ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (2.0ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (0.8ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" IN ($1, $2, $3)[0m  [[nil, 4], [nil, 2], [nil, 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 23ms (Views: 3.6ms | ActiveRecord: 3.5ms | Allocations: 3320)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 15:03:00 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.5ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (0.6ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" IN ($1, $2, $3)[0m  [[nil, 4], [nil, 2], [nil, 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 18ms (Views: 1.9ms | ActiveRecord: 1.5ms | Allocations: 3319)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 15:03:00 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (0.2ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.3ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 4ms (Views: 2.2ms | ActiveRecord: 0.4ms | Allocations: 1596)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 15:03:01 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (1.9ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (0.7ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" IN ($1, $2, $3)[0m  [[nil, 4], [nil, 2], [nil, 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 15ms (Views: 2.1ms | ActiveRecord: 3.0ms | Allocations: 3319)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 15:03:01 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.6ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.3ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (0.5ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" IN ($1, $2, $3)[0m  [[nil, 4], [nil, 2], [nil, 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 10ms (Views: 2.4ms | ActiveRecord: 1.4ms | Allocations: 3319)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 15:03:02 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.4ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (0.4ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" IN ($1, $2, $3)[0m  [[nil, 4], [nil, 2], [nil, 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 12ms (Views: 1.7ms | ActiveRecord: 1.1ms | Allocations: 3319)
+
+
+Started GET "/units" for 127.0.0.1 at 2021-08-23 15:03:02 +0530
+Processing by UnitsController#index as */*
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mUnit Load (0.6ms)[0m  [1m[34mSELECT "units".* FROM "units"[0m
+  ↳ app/controllers/units_controller.rb:4:in `index'
+Completed 200 OK in 8ms (Views: 3.5ms | ActiveRecord: 1.0ms | Allocations: 1596)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 15:03:08 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.3ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (0.7ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" IN ($1, $2, $3)[0m  [[nil, 4], [nil, 2], [nil, 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 13ms (Views: 2.7ms | ActiveRecord: 1.2ms | Allocations: 3319)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 15:03:11 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.5ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.4ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (0.6ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" IN ($1, $2, $3)[0m  [[nil, 4], [nil, 2], [nil, 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 27ms (Views: 3.3ms | ActiveRecord: 1.5ms | Allocations: 3324)
+
+
+Started GET "/measurements" for 127.0.0.1 at 2021-08-23 15:03:26 +0530
+Processing by MeasurementsController#index as */*
+  [1m[36mUser Load (0.4ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (0.5ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (0.4ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" IN ($1, $2, $3)[0m  [[nil, 4], [nil, 2], [nil, 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 12ms (Views: 1.4ms | ActiveRecord: 1.2ms | Allocations: 3320)
+
+
+Started GET "/measurements" for ::1 at 2021-08-23 15:07:07 +0530
+Processing by MeasurementsController#index as */*
+  Parameters: {"value"=>1.1, "measurement"=>{"value"=>1.1}}
+  [1m[36mUser Load (0.3ms)[0m  [1m[34mSELECT "users".* FROM "users" WHERE "users"."id" = $1 LIMIT $2[0m  [["id", 1], ["LIMIT", 1]]
+  ↳ app/controllers/application_controller.rb:31:in `logged_in_user'
+  [1m[36mMeasurement Load (3.1ms)[0m  [1m[34mSELECT "measurements".* FROM "measurements" WHERE "measurements"."user_id" = $1 ORDER BY "measurements"."created_at" DESC[0m  [["user_id", 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+  [1m[36mUnit Load (0.3ms)[0m  [1m[34mSELECT "units".* FROM "units" WHERE "units"."id" IN ($1, $2, $3)[0m  [[nil, 4], [nil, 2], [nil, 1]]
+  ↳ app/controllers/measurements_controller.rb:5:in `index'
+Completed 200 OK in 78ms (Views: 21.5ms | ActiveRecord: 13.6ms | Allocations: 12948)
+
+
