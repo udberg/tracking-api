@@ -1,11 +1,7 @@
 class MeasurementsController < ApplicationController
   def index
     @measurements = current_user.measurements.with_units.order(created_at: :desc)
-    data = Hash.new { |h, k| h[k] = [] }
-    @measurements.each do |m|
-      data[m.unit.title] << m
-    end
-    render json: { data: data, status: :ok }
+    render json: { data: @measurements }
   end
 
   def create
@@ -14,7 +10,7 @@ class MeasurementsController < ApplicationController
     if @measurement.save
       render json: { measurement: @measurement }
     else
-      render json: { error: 'Invalid submission' }
+      render json: { error: @measurement.errors }, status: :unprocessable_entity
     end
   end
 
