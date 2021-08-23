@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'factory_bot'
 require 'database_cleaner'
 require 'shoulda/matchers'
