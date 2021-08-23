@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UnitsController < ApplicationController
   def index
     @units = Unit.all

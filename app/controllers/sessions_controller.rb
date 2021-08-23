@@ -1,14 +1,16 @@
+# frozen_string_literal: true
+
 class SessionsController < ApplicationController
-    skip_before_action :authorized
+  skip_before_action :authorized
 
-    def create
-        @user = User.find_by(name: params[:name])
+  def create
+    @user = User.find_by(name: params[:name])
 
-        if @users&.authenticate(params[:password])
-            token = encode_token({ user_id: @user.id })
-            render json: { user: @user, token: token }
-        else
-            render json: { error: 'Invalid username or password' }, status: :unprocessable_entity
-        end
+    if @users&.authenticate(params[:password])
+      token = encode_token({ user_id: @user.id })
+      render json: { user: @user, token: token }
+    else
+      render json: { error: 'Invalid username or password' }, status: :unprocessable_entityc
     end
+  end
 end
