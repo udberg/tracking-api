@@ -7,7 +7,7 @@ class UnitsController < ApplicationController
   def show
     @unit = Unit.find(params[:id])
     @user = current_user
-    @measurements = @unit.measurements.for_user(@user)
+    @measurements = @unit.measurements_for_user(@user)
     render json: { unit: @unit, measurements: @measurements }, status: :ok
   end
 end
