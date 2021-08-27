@@ -1,6 +1,6 @@
 class MeasurementsController < ApplicationController
   def index
-    @measurements = current_user.measurements.with_units.order(created_at: :desc)
+    @measurements = current_user.measurements.with_units
     data = @measurements.group_by { |measurement| measurement.unit.title }
     render json: { data: data }
   end
